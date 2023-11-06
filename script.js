@@ -19,8 +19,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const deadlineInput = document.getElementById("deadlineInput");
     const addTaskButton = document.getElementById("addTask");
     const taskList = document.getElementById("taskList");
+    const darkModeSwitch = document.getElementById("darkModeSwitch");
 
     const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    const darkModeEnabled = localStorage.getItem("darkmode") === "true";
 
     function renderTasks() {
         taskList.innerHTML = "";
@@ -75,7 +77,20 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    renderTasks();
+    function toggleDarkMode() {
+        if(darkModeSwitch.checked) {
+            document.body.classList.add("dark-mode")
+            localStorage.setItem("darkMode", "true");
+        } else {
+            document.body.classList.remove("dark-mode");
+            localStorage.setItem("darkMode", "false");
+        }
+    }
+
+    if(darkModeEnabled) {
+        darkModeSwitch.checked = true;
+        toggleDarkMode();
+    }
 
     addTaskButton.addEventListener("click", function () {
         const newTask = taskInput.value.trim();
@@ -92,4 +107,8 @@ document.addEventListener("DOMContentLoaded", function () {
             renderTasks();
         }
     });
+
+    darkModeSwitch.addEventListener("change", toggleDarkMode);
+
+    renderTasks();
 });
